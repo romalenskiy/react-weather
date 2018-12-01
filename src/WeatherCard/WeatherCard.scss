@@ -1,0 +1,42 @@
+.weather-card {
+  min-width: 6rem;
+  text-align: center;
+  padding: 1rem;
+  margin: 0 0.5rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 1rem;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  .day-of-the-week {
+    font-size: 1.2rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .icon {
+    height: 5rem;
+    min-width: 4rem;
+    background-position: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    &.snow {
+      background-image: url(../assets/img/weather-snow.png)
+    }
+  }
+
+  &.active {
+    background-color: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+
+  }
+
+  &:hover {
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+  }
+}
