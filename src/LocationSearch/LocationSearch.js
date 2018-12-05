@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { GridX } from '../Foundation'
 
-const LocationSearch = () => {
+const LocationSearch = ({ value }) => {
   return (
     <GridX className="location-search cell auto shrink">
       <form className="search-form cell small-auto medium-6 large-4">
-        <input className="search-input" type="text"/>
+        <input value={value} className="search-input" type="text" readOnly/>
         <button className="search-submit" type="submit">
           <FontAwesomeIcon icon="map-marker-alt" />
         </button>
