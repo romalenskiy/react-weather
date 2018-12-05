@@ -14,18 +14,29 @@ const weekDays = {
   6: 'Saturday'
 }
 
-const DailyWeather = ({ list }) => {
+const DailyWeather = ({ list, isLoading }) => {
+  const defaultList = []
+
+  if (list.length === 0) {
+    for (let i = 0; i < 5; i++ ) {
+      defaultList.push(<WeatherCard key={i} isLoading={isLoading}/>)
+    }
+  }
+
   return (
     <GridX className="weather-dock cell auto shrink">
-      {list.map((item) => {
-        const temp = Math.round(item.main.temp)
-        const date = new Date(item.dt * 1000)
-        const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
-        const dayOfTheWeek = weekDays[date.getUTCDay()]
-        const weather = item.weather[0].main.toLowerCase()
+      {list.length === 0
+        ? defaultList.map((item) => item)
+        : list.map((item) => {
+            const temp = Math.round(item.main.temp)
+            const date = new Date(item.dt * 1000)
+            const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
+            const dayOfTheWeek = weekDays[date.getUTCDay()]
+            const weather = item.weather[0].main.toLowerCase()
 
-        return <WeatherCard key={item.dt} date={formattedDate} dayOfTheWeek={dayOfTheWeek} temp={temp} weather={weather}/>
-      })}
+            return <WeatherCard key={item.dt} date={formattedDate} dayOfTheWeek={dayOfTheWeek} temp={temp} weather={weather}/>
+          })
+      }
     </GridX>
   )
 }

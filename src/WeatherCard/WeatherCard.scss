@@ -21,11 +21,16 @@
 
   .icon {
     height: 5rem;
-    min-width: 4rem;
+    min-width: 5rem;
+    display: inline-block;
     background-position: 50%;
     background-size: contain;
     background-repeat: no-repeat;
     background-image: url(../assets/img/weather-icons/noneAvailable.png);
+
+    &.spin {
+      animation: spin infinite 2s linear;
+    }
 
     &.atmosphere {
       background-image: url(../assets/img/weather-icons/atmosphere.png)
@@ -44,6 +49,15 @@
     }
     &.thunderstorm {
       background-image: url(../assets/img/weather-icons/thunderstorm.png)
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
     }
   }
 

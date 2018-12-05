@@ -13,6 +13,7 @@ class App extends Component {
     super(props)
     this.state = {
       weatherForecast: null,
+      isLoading: false,
     }
 
     this.getUserLocation = this.getUserLocation.bind(this)
@@ -22,6 +23,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getUserLocation()
+    this.setState({ isLoading: true })
   }
 
   getUserLocation() {
@@ -33,7 +35,7 @@ class App extends Component {
   }
 
   setWeatherForecast(result) {
-    this.setState({ weatherForecast: result })
+    this.setState({ weatherForecast: result, isLoading: false })
   }
 
   fetchWeatherForecast({ lat, lon }) {
@@ -42,7 +44,7 @@ class App extends Component {
   }
 
   render() {
-    const { weatherForecast } = this.state
+    const { weatherForecast, isLoading } = this.state
     let locationName = ''
     let list = []
     if (weatherForecast) {
@@ -65,10 +67,10 @@ class App extends Component {
         	<img className="logo" src={logo} alt="React Weather Logo"/>
         </GridX>
         <LocationSearch value={locationName}/> 
-        <DailyWeather list={list}/>
+        <DailyWeather list={list} isLoading={isLoading}/>
       </GridY>
    )
   }
 }
 
-export default App;
+export default App
