@@ -1,5 +1,5 @@
 .weather-card {
-  min-width: 6rem;
+  min-width: 6.5rem;
   text-align: center;
   padding: 1rem;
   margin: 0 0.5rem;
@@ -69,5 +69,18 @@
 
   &:hover {
     box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+  }
+}
+
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  .weather-card {
+    .day-of-the-week {
+      font-size: 1.1rem;
+    }
+    .icon {
+      height: 4rem;
+      min-width: 4rem;
+    }
   }
 }
