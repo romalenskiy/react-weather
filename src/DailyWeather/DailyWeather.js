@@ -19,7 +19,7 @@ const weekDays = {
 const DailyWeather = ({ list, isLoading, errorMessage }) => {
   const defaultList = []
 
-  if (list.length === 0) {
+  if (list) {
     for (let i = 0; i < 5; i++ ) {
       defaultList.push(<WeatherCard key={i} isLoading={isLoading}/>)
     }
@@ -34,7 +34,7 @@ const DailyWeather = ({ list, isLoading, errorMessage }) => {
               {errorMessage}
             </p>
           </div>
-        : list.length === 0
+        : !list
           ? defaultList.map((item) => item)
           : list.map((item) => {
               const temp = Math.round(item.main.temp)

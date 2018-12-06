@@ -69,10 +69,13 @@ class App extends Component {
 
   render() {
     const { weatherForecast, locationName, isLoading, errorMessage } = this.state
-    let list = []
+    let list = null
 
     if (weatherForecast) {
+      list = []
       let days = []
+      
+      // Filter to make a list in which each of the days will be included only once
       list = weatherForecast.list.filter((item) => {
         const itemDate = new Date(item.dt * 1000)
         if (days.includes(itemDate.getUTCDate())) {return false}
