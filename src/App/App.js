@@ -15,6 +15,7 @@ class App extends Component {
       weatherForecast: null,
       locationName: '',
       isLoading: false,
+      errorMessage: null,
     }
 
     this.getUserLocation = this.getUserLocation.bind(this)
@@ -40,17 +41,19 @@ class App extends Component {
 
   setWeatherForecast(result) {
     const locationName = `${result.city.name}, ${result.city.country}`
-    this.setState({ weatherForecast: result, locationName, isLoading: false })
+    this.setState({ weatherForecast: result, locationName, isLoading: false, errorMessage: null })
   }
 
   fetchForecastByCoords({ lat, lon }) {
     axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
       .then(result => this.setWeatherForecast(result.data))
+      .catch(() => this.setState({ errorMessage: 'Whoops, something went wrong with your geolocation. Try to manually search your city!', isLoading: false }))
   }
 
   fetchForecastByName(locationName) {
     axios(`https://api.openweathermap.org/data/2.5/forecast?q=${locationName}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
       .then(result => this.setWeatherForecast(result.data))
+      .catch(() => this.setState({ errorMessage: 'Whoops, city not found...', isLoading: false }))
   }
 
   onLocationSearchChange(event) {
@@ -65,7 +68,7 @@ class App extends Component {
   }
 
   render() {
-    const { weatherForecast, locationName, isLoading } = this.state
+    const { weatherForecast, locationName, isLoading, errorMessage } = this.state
     let list = []
 
     if (weatherForecast) {
@@ -86,7 +89,7 @@ class App extends Component {
         	<img className="logo" src={logo} alt="React Weather Logo"/>
         </GridX>
         <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} /> 
-        <DailyWeather list={list} isLoading={isLoading}/>
+        <DailyWeather list={list} isLoading={isLoading} errorMessage={errorMessage}/>
       </GridY>
    )
   }

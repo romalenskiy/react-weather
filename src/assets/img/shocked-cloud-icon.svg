@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="60.169262"
+   width="90"
+   id="svg96"
+   y="0px"
+   x="0px"
+   version="1.1"
+   viewBox="0 0 90 60.169262">
+  <metadata
+     id="metadata102">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>tool-1 copy</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs100" />
+  <title
+     id="title84">tool-1 copy</title>
+  <desc
+     id="desc86">Created with Sketch.</desc>
+  <g
+     transform="translate(-5,-20)"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1"
+     id="g90">
+    <path
+       style="fill:#fff"
+       id="path88"
+       d="m 57.010526,45.847053 c 0,-2.110737 1.710948,-3.822632 3.822632,-3.822632 2.110737,0 3.821684,1.711895 3.821684,3.822632 0,2.110736 -1.710947,3.822631 -3.821684,3.822631 -2.111684,0 -3.822632,-1.711895 -3.822632,-3.822631 m -16.89821,18.382736 c 0,-4.786105 4.828737,-8.666526 9.614842,-8.666526 4.786105,0 9.614842,3.880421 9.614842,8.666526 0,4.787053 0.228316,8.666527 -9.614842,8.666527 -9.843158,0 -9.614842,-3.879474 -9.614842,-8.666527 m 2.232947,-18.382736 c 0,2.110736 -1.710947,3.822631 -3.821684,3.822631 -2.110737,0 -3.822632,-1.711895 -3.822632,-3.822631 0,-2.110737 1.711895,-3.822632 3.822632,-3.822632 2.110737,0 3.821684,1.711895 3.821684,3.822632 m 35.712948,0.437684 c -0.442421,0 -0.88579,0.018 -1.325369,0.0521 0.09663,-0.873474 0.145895,-1.750737 0.145895,-2.628 C 76.878737,30.636105 66.243579,20 53.170842,20 44.998842,20 37.562947,24.11821 33.224,30.894737 31.680737,30.204105 30.010526,29.846 28.290105,29.846 c -6.702631,0 -12.154737,5.453053 -12.154737,12.154737 0,0.457579 0.02558,0.915158 0.07768,1.368947 C 9.428,46.488421 5,53.285789 5,60.884632 5,71.517895 13.650421,80.169263 24.283684,80.169263 H 78.058211 C 87.40021,80.169263 95,72.568526 95,63.226526 95,53.885474 87.40021,46.284737 78.058211,46.284737" />
+  </g>
+  <text
+     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
+     id="text92"
+     font-weight="bold"
+     font-size="5px"
+     y="95"
+     x="-5">Created by Icon Island</text>
+  <text
+     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
+     id="text94"
+     font-weight="bold"
+     font-size="5px"
+     y="100"
+     x="-5">from the Noun Project</text>
+</svg>

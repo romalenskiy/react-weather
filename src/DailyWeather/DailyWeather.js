@@ -4,6 +4,8 @@ import './DailyWeather.scss'
 
 import { GridX } from '../Foundation'
 
+import shockedCloud from '../assets/img/shocked-cloud-icon.svg'
+
 const weekDays = {
   0: 'Sunday',
   1: 'Monday',
@@ -14,7 +16,7 @@ const weekDays = {
   6: 'Saturday'
 }
 
-const DailyWeather = ({ list, isLoading }) => {
+const DailyWeather = ({ list, isLoading, errorMessage }) => {
   const defaultList = []
 
   if (list.length === 0) {
@@ -25,26 +27,33 @@ const DailyWeather = ({ list, isLoading }) => {
 
   return (
     <GridX className="weather-dock cell auto shrink">
-      {list.length === 0
-        ? defaultList.map((item) => item)
-        : list.map((item) => {
-            const temp = Math.round(item.main.temp)
-            const date = new Date(item.dt * 1000)
-            const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
-            const dayOfTheWeek = weekDays[date.getUTCDay()]
-            const weather = item.weather[0].main.toLowerCase()
+      {errorMessage
+        ? <div className="cell auto error">
+            <img className="error-icon" src={shockedCloud} alt="error"/>
+            <p>
+              {errorMessage}
+            </p>
+          </div>
+        : list.length === 0
+          ? defaultList.map((item) => item)
+          : list.map((item) => {
+              const temp = Math.round(item.main.temp)
+              const date = new Date(item.dt * 1000)
+              const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
+              const dayOfTheWeek = weekDays[date.getUTCDay()]
+              const weather = item.weather[0].main.toLowerCase()
 
-            return (
-              <WeatherCard 
-                key={item.dt} 
-                date={formattedDate} 
-                dayOfTheWeek={dayOfTheWeek} 
-                temp={temp} 
-                weather={weather} 
-                isLoading={isLoading} 
-              />
-            )
-          })
+              return (
+                <WeatherCard 
+                  key={item.dt} 
+                  date={formattedDate} 
+                  dayOfTheWeek={dayOfTheWeek} 
+                  temp={temp} 
+                  weather={weather} 
+                  isLoading={isLoading} 
+                />
+              )
+            })
       }
     </GridX>
   )
