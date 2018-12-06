@@ -10,7 +10,7 @@ const WeatherCard = ({date = '01.01', dayOfTheWeek = '', temp = 'N/A', weather =
       <div className="day-of-the-week">{dayOfTheWeek}</div>
       <div className="date">{date}</div>
       <div className={iconClasses}></div>
-      <div className="temperature">{temp}°C</div>
+      <div className="temperature">{isLoading ? 'Loading' : `${temp}°C`}</div>
     </div>
   )
 }

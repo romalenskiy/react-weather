@@ -34,7 +34,16 @@ const DailyWeather = ({ list, isLoading }) => {
             const dayOfTheWeek = weekDays[date.getUTCDay()]
             const weather = item.weather[0].main.toLowerCase()
 
-            return <WeatherCard key={item.dt} date={formattedDate} dayOfTheWeek={dayOfTheWeek} temp={temp} weather={weather}/>
+            return (
+              <WeatherCard 
+                key={item.dt} 
+                date={formattedDate} 
+                dayOfTheWeek={dayOfTheWeek} 
+                temp={temp} 
+                weather={weather} 
+                isLoading={isLoading} 
+              />
+            )
           })
       }
     </GridX>
