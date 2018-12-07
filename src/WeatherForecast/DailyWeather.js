@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { WeatherCard } from '../WeatherCard'
-import './DailyWeather.scss'
+import { WeatherCardDaily } from '../WeatherCard'
+import './WeatherForecast.scss'
 
 import { GridX } from '../Foundation'
 
@@ -19,9 +19,9 @@ const weekDays = {
 const DailyWeather = ({ list, isLoading, errorMessage }) => {
   const defaultList = []
 
-  if (list) {
+  if (!list) {
     for (let i = 0; i < 5; i++ ) {
-      defaultList.push(<WeatherCard key={i} isLoading={isLoading}/>)
+      defaultList.push(<WeatherCardDaily key={i} isLoading={isLoading}/>)
     }
   }
 
@@ -44,7 +44,7 @@ const DailyWeather = ({ list, isLoading, errorMessage }) => {
               const weather = item.weather[0].main.toLowerCase()
 
               return (
-                <WeatherCard 
+                <WeatherCardDaily 
                   key={item.dt} 
                   date={formattedDate} 
                   dayOfTheWeek={dayOfTheWeek} 

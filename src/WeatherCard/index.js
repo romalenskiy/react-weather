@@ -1,5 +1,7 @@
-import WeatherCard from './WeatherCard'
+import WeatherCardDaily from './WeatherCardDaily'
+import WeatherCardHourly from './WeatherCardHourly'
 
 export {
-  WeatherCard
+  WeatherCardDaily,
+  WeatherCardHourly
 }

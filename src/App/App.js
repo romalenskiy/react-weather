@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Route, Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import './App.scss';
 
 import { GridX, GridY } from '../Foundation'
-import { DailyWeather } from '../DailyWeather'
+import { DailyWeather, HourlyWeather } from '../WeatherForecast'
 import { LocationSearch } from '../LocationSearch'
 
 import logo from '../assets/img/React-weather-logo.png'
@@ -69,14 +70,16 @@ class App extends Component {
 
   render() {
     const { weatherForecast, locationName, isLoading, errorMessage } = this.state
-    let list = null
+    let dayList = null
+    let hourList = null
 
     if (weatherForecast) {
-      list = []
+      dayList = []
+      hourList = weatherForecast.list
       let days = []
       
-      // Filter to make a list in which each of the days will be included only once
-      list = weatherForecast.list.filter((item) => {
+      // Filter to make a dayList in which each of the days will be included only once
+      dayList = weatherForecast.list.filter((item) => {
         const itemDate = new Date(item.dt * 1000)
         if (days.includes(itemDate.getUTCDate())) {return false}
         days.push(itemDate.getUTCDate())
@@ -89,10 +92,16 @@ class App extends Component {
     return (
       <GridY className="main grid-container">
         <GridX className="cell auto shrink">
-        	<img className="logo" src={logo} alt="React Weather Logo"/>
+          <Link to="/">
+            <img className="logo" src={logo} alt="React Weather Logo"/>
+          </Link>
         </GridX>
         <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} /> 
-        <DailyWeather list={list} isLoading={isLoading} errorMessage={errorMessage}/>
+        <DailyWeather list={dayList} isLoading={isLoading} errorMessage={errorMessage}/>
+
+        <Route path="/day/:dayOfTheWeek" render={(props) => 
+          !errorMessage && <HourlyWeather {...props}  list={hourList} error={errorMessage} />}
+        />
       </GridY>
    )
   }
