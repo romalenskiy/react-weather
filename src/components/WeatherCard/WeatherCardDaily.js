@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import MediaQuery from 'react-responsive'
 import { NavLink } from 'react-router-dom'
 import './WeatherCard.scss'
 
@@ -8,7 +9,21 @@ const WeatherCard = ({date = '01.01', dayOfTheWeek = '', temp = 'N/A', weather =
 
   return (
     <NavLink className={cardClasses} to={`/day/${dayOfTheWeek.toLowerCase()}`} activeClassName="active">
-      <div className="day-of-the-week">{dayOfTheWeek}</div>
+      <MediaQuery query="screen and (max-device-width: 63.9375em)">
+        {
+          (matches) => {
+            if (matches) {
+              return (
+                <div className="day-of-the-week">{dayOfTheWeek.slice(0, 3)}</div>
+              )
+            } else {
+              return (
+                <div className="day-of-the-week">{dayOfTheWeek}</div>
+              )
+            }
+          }
+        }
+      </MediaQuery>
       <div className="date">{date}</div>
       <div className={iconClasses}></div>
       <div className="temperature">{isLoading ? 'Loading' : `${temp}°C`}</div>
