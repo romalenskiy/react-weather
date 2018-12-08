@@ -7,6 +7,8 @@ import { GridX, GridY } from '../Foundation'
 import { DailyWeather, HourlyWeather } from '../WeatherForecast'
 import { LocationSearch } from '../LocationSearch'
 
+import { WEEK_DAYS } from '../../constants'
+
 import logo from '../../assets/img/React-weather-logo.png'
 
 class App extends Component {
@@ -72,6 +74,7 @@ class App extends Component {
     const { weatherForecast, locationName, isLoading, errorMessage } = this.state
     let dayList = null
     let hourList = null
+    let dayOfTheWeek = null
 
     if (weatherForecast) {
       dayList = []
@@ -85,6 +88,10 @@ class App extends Component {
         days.push(itemDate.getUTCDate())
         return true
       })
+
+      // Getting current day of the week to appropriate redirect
+      const date = new Date(dayList[0].dt * 1000)
+      dayOfTheWeek = WEEK_DAYS[date.getUTCDay()].toLowerCase()
     }
 
 
@@ -98,6 +105,10 @@ class App extends Component {
         </GridX>
         <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} /> 
         <DailyWeather list={dayList} isLoading={isLoading} errorMessage={errorMessage}/>
+
+        <Route exact path="/" render={() =>
+          dayOfTheWeek && <Redirect to={`/day/${dayOfTheWeek}`} />} 
+        />
 
         <Route path="/day/:dayOfTheWeek" render={(props) => 
           !errorMessage && <HourlyWeather {...props}  list={hourList} />}
