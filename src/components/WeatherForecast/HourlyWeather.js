@@ -4,18 +4,10 @@ import './WeatherForecast.scss'
 
 import { GridX } from '../Foundation'
 
-const dayIDs = {
-  'sunday': 0,
-  'monday': 1,
-  'tuesday': 2,
-  'wednesday': 3,
-  'thursday': 4,
-  'friday': 5,
-  'saturday': 6
-}
+import { DAY_IDS } from '../../constants'
 
-const HourlyWeather = ({ match, list, error }) => {
-  const dayID = dayIDs[match.params.dayOfTheWeek]
+const HourlyWeather = ({ match, list }) => {
+  const dayID = DAY_IDS[match.params.dayOfTheWeek]
   let filteredList = []  
 
   if (list) {  

@@ -17,25 +17,25 @@
     background-position: 50%;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url(../assets/img/weather-icons/noneAvailable.png);
+    background-image: url(../../assets/img/weather-icons/noneAvailable.png);
 
     &.atmosphere {
-      background-image: url(../assets/img/weather-icons/atmosphere.png)
+      background-image: url(../../assets/img/weather-icons/atmosphere.png)
     }
     &.clear {
-      background-image: url(../assets/img/weather-icons/clear.png)
+      background-image: url(../../assets/img/weather-icons/clear.png)
     }
     &.clouds {
-      background-image: url(../assets/img/weather-icons/clouds.png)
+      background-image: url(../../assets/img/weather-icons/clouds.png)
     }
     &.snow {
-      background-image: url(../assets/img/weather-icons/snow.png)
+      background-image: url(../../assets/img/weather-icons/snow.png)
     }
     &.rain, &.drizzle {
-      background-image: url(../assets/img/weather-icons/rain.png)
+      background-image: url(../../assets/img/weather-icons/rain.png)
     }
     &.thunderstorm {
-      background-image: url(../assets/img/weather-icons/thunderstorm.png)
+      background-image: url(../../assets/img/weather-icons/thunderstorm.png)
     }
   }
 

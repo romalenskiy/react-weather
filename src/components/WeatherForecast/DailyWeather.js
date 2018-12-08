@@ -4,17 +4,9 @@ import './WeatherForecast.scss'
 
 import { GridX } from '../Foundation'
 
-import shockedCloud from '../assets/img/shocked-cloud-icon.svg'
+import shockedCloud from '../../assets/img/shocked-cloud-icon.svg'
 
-const weekDays = {
-  0: 'Sunday',
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday'
-}
+import { WEEK_DAYS } from '../../constants'
 
 const DailyWeather = ({ list, isLoading, errorMessage }) => {
   const defaultList = []
@@ -40,7 +32,7 @@ const DailyWeather = ({ list, isLoading, errorMessage }) => {
               const temp = Math.round(item.main.temp)
               const date = new Date(item.dt * 1000)
               const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
-              const dayOfTheWeek = weekDays[date.getUTCDay()]
+              const dayOfTheWeek = WEEK_DAYS[date.getUTCDay()]
               const weather = item.weather[0].main.toLowerCase()
 
               return (

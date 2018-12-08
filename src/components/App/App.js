@@ -7,7 +7,7 @@ import { GridX, GridY } from '../Foundation'
 import { DailyWeather, HourlyWeather } from '../WeatherForecast'
 import { LocationSearch } from '../LocationSearch'
 
-import logo from '../assets/img/React-weather-logo.png'
+import logo from '../../assets/img/React-weather-logo.png'
 
 class App extends Component {
   constructor(props) {
@@ -100,7 +100,7 @@ class App extends Component {
         <DailyWeather list={dayList} isLoading={isLoading} errorMessage={errorMessage}/>
 
         <Route path="/day/:dayOfTheWeek" render={(props) => 
-          !errorMessage && <HourlyWeather {...props}  list={hourList} error={errorMessage} />}
+          !errorMessage && <HourlyWeather {...props}  list={hourList} />}
         />
       </GridY>
    )
