@@ -5,9 +5,9 @@ import './index.scss';
 import { App } from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faMapMarkerAlt)
+library.add(faSearch)
 
 ReactDOM.render(
   <Router>
