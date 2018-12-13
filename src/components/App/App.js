@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import './App.scss';
 
-import { GridX, GridY } from '../Foundation'
+import { GridY } from '../Foundation'
 import { DailyWeather, HourlyWeather } from '../WeatherForecast'
 import { LocationSearch } from '../LocationSearch'
+import { Logo } from '../Logo'
 
 import { WEEK_DAYS } from '../../constants'
-
-import logo from '../../assets/img/React-weather-logo.png'
 
 class App extends Component {
   constructor(props) {
@@ -98,12 +97,10 @@ class App extends Component {
 
     return (
       <GridY className="main grid-container">
-        <GridX className="cell auto shrink">
-          <Link to="/">
-            <img className="logo" src={logo} alt="React Weather Logo"/>
-          </Link>
-        </GridX>
+        <Logo />
+
         <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} /> 
+
         <DailyWeather list={dayList} isLoading={isLoading} errorMessage={errorMessage}/>
 
         <Route exact path="/" render={() =>
