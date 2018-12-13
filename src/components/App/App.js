@@ -46,16 +46,22 @@ class App extends Component {
     this.setState({ weatherForecast: result, locationName, isLoading: false, errorMessage: null })
   }
 
-  fetchForecastByCoords({ lat, lon }) {
-    axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
-      .then(result => this.setWeatherForecast(result.data))
-      .catch(() => this.setState({ errorMessage: 'Whoops, something went wrong with your geolocation. Try to manually search your city!', isLoading: false }))
+  async fetchForecastByCoords({ lat, lon }) {
+    try {
+      const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
+      this.setWeatherForecast(result.data)
+    } catch (error) {
+      this.setState({ errorMessage: 'Whoops, something went wrong with your geolocation. Try to manually search your city!', isLoading: false })
+    }
   }
 
-  fetchForecastByName(locationName) {
-    axios(`https://api.openweathermap.org/data/2.5/forecast?q=${locationName}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
-      .then(result => this.setWeatherForecast(result.data))
-      .catch(() => this.setState({ errorMessage: 'Whoops, city not found...', isLoading: false }))
+  async fetchForecastByName(locationName) {
+    try {
+      const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?q=${locationName}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
+      this.setWeatherForecast(result.data)
+    } catch (error) {
+      this.setState({ errorMessage: 'Whoops, city not found...', isLoading: false })
+    }
   }
 
   onLocationSearchChange(event) {
