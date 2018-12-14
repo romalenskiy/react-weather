@@ -1,5 +1,7 @@
 .location-search {
   margin-bottom: 1rem;
+  position: relative;
+  
   .search-form {
     display: flex;
     flex-direction: row;
@@ -22,5 +24,48 @@
     outline: none;
     margin-right: 1rem;
     cursor: pointer;
+  }
+
+  .search-suggestions {
+    position: absolute;
+    top: 2.7rem;
+    border-radius: 1.5rem;
+    background-color: rgb(248, 248, 248);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+
+    .suggestion {
+      padding: 0.25rem 0.5rem 0.25rem 1rem;
+      transition: background-color 0.3s;
+
+      &.item{
+        cursor: pointer;
+  
+        &:hover {
+          background-color: rgb(233, 233, 233);
+        }
+      }
+
+      &.loading, &.not-found {
+        font-style: italic;
+      }
+
+
+      &:first-child {
+        border-top-right-radius: 1.5rem;
+        border-top-left-radius: 1.5rem;
+        padding-top: 0.5rem;
+      }
+  
+      &:last-child {
+        border-bottom-right-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+        padding-bottom: 0.5rem
+      }
+    }
+
+    .loading-icon {
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
   }
 }

@@ -5,9 +5,9 @@ import './index.scss';
 import { App } from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faSearch)
+library.add(faSearch, faSyncAlt)
 
 ReactDOM.render(
   <Router>

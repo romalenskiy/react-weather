@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DebounceInput } from 'react-debounce-input'
 import './LocationSearch.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -8,6 +9,7 @@ class LocationSearch extends Component {
   constructor(props) {
     super(props)
     this.searchInput = React.createRef()
+    this.citySuggestion = React.createRef()
 
     this.onClick = this.onClick.bind(this)
   }   
@@ -21,16 +23,31 @@ class LocationSearch extends Component {
   }
 
   render() {
-    const { value, onChange, onSubmit } = this.props
+    const { value, onChange, onSubmit, onCitySuggestionClick, citySuggestions, isLoading } = this.props
 
     return (
       <GridX className="location-search cell auto shrink">
-        <form onSubmit={onSubmit} className="search-form cell small-auto medium-6 large-4">
-          <input value={value} onChange={onChange} onClick={this.onClick} className="search-input" type="text" ref={this.searchInput}/>
+        <form onSubmit={onSubmit} className="search-form cell small-12 medium-6 large-4">
+          <DebounceInput value={value} debounceTimeout="1000" onChange={onChange} onClick={this.onClick} className="search-input" type="text" inputRef={this.searchInput} />
           <button className="search-submit" type="submit">
             <FontAwesomeIcon icon="search" />
           </button>
         </form>
+        <ul className="search-suggestions menu vertical small-12 medium-6 large-4">
+          {isLoading 
+          ? <li className="suggestion loading"><FontAwesomeIcon className="loading-icon" icon="sync-alt" spin/>Loading</li>
+          : citySuggestions && citySuggestions.data.list.length === 0
+            ? <li className="suggestion not-found">No suggestion found.</li>
+            : citySuggestions && citySuggestions.data.list.map((item) => {
+                const coorMix = `${item.coord.lat}${item.coord.lon}`
+                const name = item.name
+                const id = item.id
+                const country = item.sys.country
+
+                return <li key={coorMix} className="suggestion item" onClick={onCitySuggestionClick} ref={this.citySuggestion} data-city-id={id}>{`${name}, ${country}`}</li>
+              })
+          }
+        </ul>
       </GridX>
     )
   }

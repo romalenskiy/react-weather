@@ -15,8 +15,10 @@ class App extends Component {
     super(props)
     this.state = {
       weatherForecast: null,
+      citySuggestions: null,
       locationName: '',
-      isLoading: false,
+      isWeatherLoading: false,
+      isCitySuggestionsLoading: false,
       errorMessage: null,
     }
 
@@ -24,8 +26,11 @@ class App extends Component {
     this.setWeatherForecast = this.setWeatherForecast.bind(this)
     this.fetchForecastByCoords = this.fetchForecastByCoords.bind(this)
     this.fetchForecastByName = this.fetchForecastByName.bind(this)
+    this.fetchForecastById = this.fetchForecastById.bind(this)
+    this.fetchCitySuggestions = this.fetchCitySuggestions.bind(this)
     this.onLocationSearchChange = this.onLocationSearchChange.bind(this)
     this.onLocationSearchSubmit = this.onLocationSearchSubmit.bind(this)
+    this.onCitySuggestionClick = this.onCitySuggestionClick.bind(this)
   }
 
   componentDidMount() {
@@ -34,7 +39,7 @@ class App extends Component {
 
   getUserLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({ isLoading: true })
+      this.setState({ isWeatherLoading: true })
       const lat = position.coords.latitude
       const lon = position.coords.longitude
       this.fetchForecastByCoords({ lat, lon })
@@ -43,7 +48,7 @@ class App extends Component {
 
   setWeatherForecast(result) {
     const locationName = `${result.city.name}, ${result.city.country}`
-    this.setState({ weatherForecast: result, locationName, isLoading: false, errorMessage: null })
+    this.setState({ weatherForecast: result, locationName, isWeatherLoading: false, errorMessage: null })
   }
 
   async fetchForecastByCoords({ lat, lon }) {
@@ -51,7 +56,7 @@ class App extends Component {
       const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
       this.setWeatherForecast(result.data)
     } catch (error) {
-      this.setState({ errorMessage: 'Whoops, something went wrong with your geolocation. Try to manually search your city!', isLoading: false })
+      this.setState({ errorMessage: 'Whoops, something went wrong with your geolocation. Try to manually search your city!', isWeatherLoading: false })
     }
   }
 
@@ -60,23 +65,57 @@ class App extends Component {
       const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?q=${locationName}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
       this.setWeatherForecast(result.data)
     } catch (error) {
-      this.setState({ errorMessage: 'Whoops, city not found...', isLoading: false })
+      this.setState({ errorMessage: 'Whoops, city not found...', isWeatherLoading: false })
+    }
+  }
+
+  async fetchForecastById(id) {
+    try {
+      const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?id=${id}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
+      this.setWeatherForecast(result.data)
+    } catch (error) {
+      this.setState({ errorMessage: 'Whoops, city not found...', isWeatherLoading: false })
+    }
+  }
+
+  async fetchCitySuggestions(locationName) {
+    try {
+      const result = await axios(`https://api.openweathermap.org/data/2.5/find?q=${locationName}&APPID=${process.env.REACT_APP_OW_API_KEY}`)
+      this.setState({ citySuggestions: result, isCitySuggestionsLoading: false })
+    } catch (error) {
+      this.setState({ citySuggestions: null, isCitySuggestionsLoading: false })
     }
   }
 
   onLocationSearchChange(event) {
-    this.setState({ locationName: event.target.value })
+    const locationName = event.target.value
+
+    this.setState({ locationName: locationName })
+
+    if (locationName.length >= 3) {
+      this.setState({ isCitySuggestionsLoading: true })
+      this.fetchCitySuggestions(locationName)
+    } else {
+      this.setState({ citySuggestions: null })
+    }
   }
 
   onLocationSearchSubmit(event) {
     event.preventDefault()
 
-    this.setState({ isLoading: true })
+    this.setState({ isWeatherLoading: true, citySuggestions: null })
     this.fetchForecastByName(this.state.locationName)
   }
 
+  onCitySuggestionClick(event) {
+    const cityId = event.target.getAttribute('data-city-id')
+    
+    this.setState({ isWeatherLoading: true, citySuggestions: null })
+    this.fetchForecastById(cityId)
+  }
+
   render() {
-    const { weatherForecast, locationName, isLoading, errorMessage } = this.state
+    const { weatherForecast, citySuggestions, locationName, isWeatherLoading, isCitySuggestionsLoading, errorMessage } = this.state
     let dayList = null
     let hourList = null
     let dayOfTheWeek = null
@@ -105,9 +144,9 @@ class App extends Component {
       <GridY className="main grid-container">
         <Logo />
 
-        <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} /> 
+        <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} onCitySuggestionClick={this.onCitySuggestionClick} citySuggestions={citySuggestions} isLoading={isCitySuggestionsLoading}/> 
 
-        <DailyWeather list={dayList} isLoading={isLoading} errorMessage={errorMessage}/>
+        <DailyWeather list={dayList} isLoading={isWeatherLoading} errorMessage={errorMessage}/>
 
         <Route exact path="/" render={() =>
           dayOfTheWeek && <Redirect to={`/day/${dayOfTheWeek}`} />} 
