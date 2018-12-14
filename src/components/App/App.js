@@ -20,6 +20,7 @@ class App extends Component {
       isWeatherLoading: false,
       isCitySuggestionsLoading: false,
       errorMessage: null,
+      locationSearchCursorCounter: 0,
     }
 
     this.getUserLocation = this.getUserLocation.bind(this)
@@ -31,6 +32,7 @@ class App extends Component {
     this.onLocationSearchChange = this.onLocationSearchChange.bind(this)
     this.onLocationSearchSubmit = this.onLocationSearchSubmit.bind(this)
     this.onCitySuggestionClick = this.onCitySuggestionClick.bind(this)
+    this.handleLocationSearchNavigation = this.handleLocationSearchNavigation.bind(this)
   }
 
   componentDidMount() {
@@ -90,7 +92,7 @@ class App extends Component {
   onLocationSearchChange(event) {
     const locationName = event.target.value
 
-    this.setState({ locationName: locationName })
+    this.setState({ locationName: locationName, locationSearchCursorCounter: 0  })
 
     if (locationName.length >= 3) {
       this.setState({ isCitySuggestionsLoading: true })
@@ -103,19 +105,44 @@ class App extends Component {
   onLocationSearchSubmit(event) {
     event.preventDefault()
 
-    this.setState({ isWeatherLoading: true, citySuggestions: null })
-    this.fetchForecastByName(this.state.locationName)
+    const activeCitySuggestion = document.querySelector('.suggestion.item.active')
+    if (!activeCitySuggestion) return
+    const cityId = activeCitySuggestion.getAttribute('data-city-id')
+
+    this.setState({ isWeatherLoading: true, citySuggestions: null, locationSearchCursorCounter: 0 })
+    this.fetchForecastById(cityId)
   }
 
   onCitySuggestionClick(event) {
     const cityId = event.target.getAttribute('data-city-id')
     
-    this.setState({ isWeatherLoading: true, citySuggestions: null })
+    this.setState({ isWeatherLoading: true, citySuggestions: null, locationSearchCursorCounter: 0 })
     this.fetchForecastById(cityId)
   }
 
+  handleLocationSearchNavigation(event) {
+
+    const { locationSearchCursorCounter, citySuggestions } = this.state
+
+    if (!citySuggestions) return
+
+    // Preventing cursor from jumping to end and to start of input field
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') event.preventDefault()
+
+    // arrow up/down button should select next/previous list element
+    if (event.key === 'ArrowUp' && locationSearchCursorCounter > 0) {
+      this.setState((prevState) => ({
+        locationSearchCursorCounter: prevState.locationSearchCursorCounter - 1
+      }))
+    } else if (event.key === 'ArrowDown' && locationSearchCursorCounter < citySuggestions.data.list.length - 1) {
+      this.setState((prevState) => ({
+        locationSearchCursorCounter: prevState.locationSearchCursorCounter + 1
+      }))
+    }
+  }
+
   render() {
-    const { weatherForecast, citySuggestions, locationName, isWeatherLoading, isCitySuggestionsLoading, errorMessage } = this.state
+    const { weatherForecast, citySuggestions, locationName, isWeatherLoading, isCitySuggestionsLoading, errorMessage, locationSearchCursorCounter } = this.state
     let dayList = null
     let hourList = null
     let dayOfTheWeek = null
@@ -144,7 +171,7 @@ class App extends Component {
       <GridY className="main grid-container">
         <Logo />
 
-        <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} onCitySuggestionClick={this.onCitySuggestionClick} citySuggestions={citySuggestions} isLoading={isCitySuggestionsLoading}/> 
+        <LocationSearch value={locationName} onChange={this.onLocationSearchChange} onSubmit={this.onLocationSearchSubmit} onCitySuggestionClick={this.onCitySuggestionClick} citySuggestions={citySuggestions} isLoading={isCitySuggestionsLoading} cursorCounter={locationSearchCursorCounter} handleNavigation={this.handleLocationSearchNavigation}/> 
 
         <DailyWeather list={dayList} isLoading={isWeatherLoading} errorMessage={errorMessage}/>
 

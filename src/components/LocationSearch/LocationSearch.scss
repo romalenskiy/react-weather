@@ -37,6 +37,10 @@
       padding: 0.25rem 0.5rem 0.25rem 1rem;
       transition: background-color 0.3s;
 
+      &.active {
+        background-color: rgb(221, 221, 221);
+      }
+
       &.item{
         cursor: pointer;
   
