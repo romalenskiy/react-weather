@@ -11,6 +11,7 @@ This project aims to master newly acquired [React](https://reactjs.org/) skills.
 * Fetching 5 day / 3 hour weather forecasts from [OpenWeatherMap API](https://openweathermap.org/api).
 * Getting current user position via browser [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API).
 * Searching locations by city name.
+* Fetching suggestions for location search.
 * Displaying hourly forecast for each day with routing.
 
 ## Local setup
@@ -18,7 +19,7 @@ This project aims to master newly acquired [React](https://reactjs.org/) skills.
 Clone the repo:
 
 ```bash
-git clone https://github.com/Roman-Alenskiy/react-weather.git
+git clone https://github.com/romalenskiy/react-weather.git
 ```
 
 Install node packages:
@@ -31,6 +32,7 @@ Set up environment variables:
 
 ```bash
 # In the project root
+# Replace "your_api_key" with your OpenWeatherMap API key
 echo "REACT_APP_OW_API_KEY=your_api_key" >> .env
 ```
 
