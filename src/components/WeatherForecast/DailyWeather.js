@@ -31,7 +31,7 @@ const DailyWeather = ({ list, isLoading, errorMessage }) => {
           : list.map((item) => {
               const temp = Math.round(item.main.temp)
               const date = new Date(item.dt * 1000)
-              const formattedDate = `${date.getUTCDate()}.${date.getUTCMonth()}`
+              const formattedDate = `${date.getUTCDate()}.${('0' + (date.getUTCMonth() + 1)).slice(-2)}`
               const dayOfTheWeek = WEEK_DAYS[date.getUTCDay()]
               const weather = item.weather[0].main.toLowerCase()
 
