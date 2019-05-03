@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import MediaQuery from 'react-responsive'
 import { NavLink } from 'react-router-dom'
 import './WeatherCard.scss'
 
-const WeatherCard = ({date = '01.01', dayOfTheWeek = '', temp = 'N/A', weather = '', className = '', isLoading = false }) => {
+function WeatherCard({
+  date = '01.01', dayOfTheWeek = '', temp = 'N/A', weather = '', className = '', isLoading = false,
+}) {
   const cardClasses = `weather-card daily cell auto ${className}`
   const iconClasses = isLoading ? 'icon spin' : `icon ${weather}`
 
@@ -16,16 +18,15 @@ const WeatherCard = ({date = '01.01', dayOfTheWeek = '', temp = 'N/A', weather =
               return (
                 <div className="day-of-the-week">{dayOfTheWeek.slice(0, 3)}</div>
               )
-            } else {
-              return (
-                <div className="day-of-the-week">{dayOfTheWeek}</div>
-              )
             }
+            return (
+              <div className="day-of-the-week">{dayOfTheWeek}</div>
+            )
           }
         }
       </MediaQuery>
       <div className="date">{date}</div>
-      <div className={iconClasses}></div>
+      <div className={iconClasses} />
       <div className="temperature">{isLoading ? 'Loading' : `${temp}°C`}</div>
     </NavLink>
   )

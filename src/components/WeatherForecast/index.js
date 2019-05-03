@@ -1,7 +1,7 @@
-import DailyWeather  from './DailyWeather'
+import DailyWeather from './DailyWeather'
 import HourlyWeather from './HourlyWeather'
 
 export {
   DailyWeather,
-  HourlyWeather
+  HourlyWeather,
 }

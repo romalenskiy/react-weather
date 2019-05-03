@@ -3,5 +3,5 @@ import WeatherCardHourly from './WeatherCardHourly'
 
 export {
   WeatherCardDaily,
-  WeatherCardHourly
+  WeatherCardHourly,
 }

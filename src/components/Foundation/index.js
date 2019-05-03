@@ -3,5 +3,5 @@ import GridY from './GridY'
 
 export {
   GridX,
-  GridY
+  GridY,
 }

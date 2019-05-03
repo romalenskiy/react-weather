@@ -5,7 +5,8 @@
     "react-hooks"
   ],
   "env": {
-    "browser": true
+    "browser": true,
+    "jest": true
   },
   "rules": {
     "semi": ["error", "never"],

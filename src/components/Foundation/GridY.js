@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react'
 
-const GridY = ({className = '', children }) => {
+function GridY({ className = '', children }) {
   const classes = `grid-y ${className}`
 
   return (
@@ -10,4 +10,4 @@ const GridY = ({className = '', children }) => {
   )
 }
 
-export default GridY;
+export default GridY
