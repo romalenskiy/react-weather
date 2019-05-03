@@ -44,7 +44,7 @@ function LocationSearch(props) {
         Loading
       </li>
     )
-  } else if (citySuggestions && citySuggestions.data.list.length === 0) {
+  } else if (citySuggestions && citySuggestions.list.length === 0) {
     suggestionList = (
       <li className="suggestion not-found">
         No suggestion found.
@@ -52,7 +52,7 @@ function LocationSearch(props) {
     )
   } else if (citySuggestions) {
     suggestionList = (
-      citySuggestions.data.list.map((item, index) => {
+      citySuggestions.list.map((item, index) => {
         const coorMix = `${item.coord.lat}${item.coord.lon}`
         const { name, id } = item
         const { country } = item.sys

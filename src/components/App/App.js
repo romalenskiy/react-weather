@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import './App.scss'
@@ -10,64 +10,100 @@ import { Logo } from '../Logo'
 
 import { WEEK_DAYS } from '../../constants'
 
-const useOpenWeatherMapAPI = () => {
-  const [weatherForecast, setWeatherForecast] = useState(null)
-  const [citySuggestions, setCitySuggestions] = useState(null)
-  const [locationName, setLocationName] = useState('')
-  const [isWeatherLoading, setIsWeatherLoading] = useState(false)
-  const [isCitySuggestionsLoading, setIsCitySuggestionsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [locationSearchCursorCounter, setLocationSearchCursorCounter] = useState(0)
+function dataFetchReducer(state, action) {
+  const { type, payload } = action
 
-  function handleWeatherForecastUpdate(result) {
-    setWeatherForecast(result)
-    setLocationName(`${result.city.name}, ${result.city.country}`)
-    setIsWeatherLoading(false)
-    setErrorMessage(null)
-  }
-
-  async function fetchForecastByCoords({ lat, lon }) {
-    try {
-      const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
-      handleWeatherForecastUpdate(result.data)
-    } catch (error) {
-      setErrorMessage('Whoops, something went wrong with your geolocation. Try to manually search your city!')
-      setIsWeatherLoading(false)
+  switch (type) {
+    case 'FETCH_WEATHER_INIT':
+      return {
+        ...state,
+        isWeatherLoading: true,
+        citySuggestions: null,
+      }
+    case 'FETCH_CITY_SUGGESTIONS_INIT':
+      return {
+        ...state,
+        isCitySuggestionsLoading: true,
+      }
+    case 'FETCH_WEATHER_SUCCESS':
+      return {
+        ...state,
+        locationName: `${payload.city.name}, ${payload.city.country}`,
+        weatherForecast: payload,
+        isWeatherLoading: false,
+        errorMessage: null,
+      }
+    case 'FETCH_CITY_SUGGESTIONS_SUCCESS':
+      return {
+        ...state,
+        citySuggestions: payload,
+        isCitySuggestionsLoading: false,
+      }
+    case 'FETCH_CITY_SUGGESTIONS_FAILURE':
+      return {
+        ...state,
+        citySuggestions: null,
+        isCitySuggestionsLoading: false,
+      }
+    case 'FETCH_WEATHER_FAILURE':
+      return {
+        ...state,
+        errorMessage: payload,
+        isWeatherLoading: false,
+      }
+    case 'UPDATE_LOCATION_NAME': {
+      return {
+        ...state,
+        locationName: payload,
+        locationSearchCursorCounter: 0,
+      }
     }
+    default:
+      throw new Error(`Undefined reducer action type: ${type}`)
   }
+}
+
+function useOpenWeatherMapAPI() {
+  const [state, dispatch] = useReducer(dataFetchReducer, {
+    locationName: '',
+    weatherForecast: null,
+    isWeatherLoading: false,
+    errorMessage: null,
+    citySuggestions: null,
+    isCitySuggestionsLoading: false,
+  })
+  const { citySuggestions } = state
+
+  const [locationSearchCursorCounter, setLocationSearchCursorCounter] = useState(0)
 
   async function fetchForecastById(id) {
     try {
       const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?id=${id}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
-      handleWeatherForecastUpdate(result.data)
+      dispatch({ type: 'FETCH_WEATHER_SUCCESS', payload: result.data })
     } catch (error) {
-      setErrorMessage('Whoops, city not found...')
-      setIsWeatherLoading(false)
+      dispatch({ type: 'FETCH_WEATHER_FAILURE', payload: 'Whoops, city not found...' })
     }
   }
 
   async function fetchCitySuggestions(newLocationName) {
     try {
       const result = await axios(`https://api.openweathermap.org/data/2.5/find?q=${newLocationName}&APPID=${process.env.REACT_APP_OW_API_KEY}`)
-      setCitySuggestions(result)
-      setIsCitySuggestionsLoading(false)
+      dispatch({ type: 'FETCH_CITY_SUGGESTIONS_SUCCESS', payload: result.data })
     } catch (error) {
-      setCitySuggestions(null)
-      setIsCitySuggestionsLoading(false)
+      dispatch({ type: 'FETCH_CITY_SUGGESTIONS_FAILURE' })
     }
   }
 
   function onLocationSearchChange(event) {
     const newLocationName = event.target.value
 
-    setLocationName(newLocationName)
-    setLocationSearchCursorCounter(0)
+    dispatch({ type: 'UPDATE_LOCATION_NAME', payload: newLocationName })
 
     if (newLocationName.length >= 3) {
-      setIsCitySuggestionsLoading(true)
+      dispatch({ type: 'FETCH_CITY_SUGGESTIONS_INIT' })
       fetchCitySuggestions(newLocationName)
     } else {
-      setCitySuggestions(null)
+      dispatch({ type: 'FETCH_CITY_SUGGESTIONS_FAILURE' })
     }
   }
 
@@ -78,8 +114,7 @@ const useOpenWeatherMapAPI = () => {
     if (!activeCitySuggestion) return
     const cityId = activeCitySuggestion.getAttribute('data-city-id')
 
-    setIsWeatherLoading(true)
-    setCitySuggestions(null)
+    dispatch({ type: 'FETCH_WEATHER_INIT' })
     setLocationSearchCursorCounter(0)
 
     fetchForecastById(cityId)
@@ -88,8 +123,7 @@ const useOpenWeatherMapAPI = () => {
   function onCitySuggestionClick(event) {
     const cityId = event.target.getAttribute('data-city-id')
 
-    setIsWeatherLoading(true)
-    setCitySuggestions(null)
+    dispatch({ type: 'FETCH_WEATHER_INIT' })
     setLocationSearchCursorCounter(0)
 
     fetchForecastById(cityId)
@@ -104,18 +138,27 @@ const useOpenWeatherMapAPI = () => {
     // arrow up/down button should select next/previous list element
     if (event.key === 'ArrowUp' && locationSearchCursorCounter > 0) {
       setLocationSearchCursorCounter(locationSearchCursorCounter - 1)
-    } else if (event.key === 'ArrowDown' && locationSearchCursorCounter < citySuggestions.data.list.length - 1) {
+    } else if (event.key === 'ArrowDown' && locationSearchCursorCounter < citySuggestions.list.length - 1) {
       setLocationSearchCursorCounter(locationSearchCursorCounter + 1)
     }
   }
 
   useEffect(() => {
+    async function fetchForecastByCoords({ latitude, longitude }) {
+      try {
+        const result = await axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=${process.env.REACT_APP_OW_API_KEY}`)
+        dispatch({ type: 'FETCH_WEATHER_SUCCESS', payload: result.data })
+      } catch (error) {
+        dispatch({ type: 'FETCH_WEATHER_FAILURE', payload: 'Whoops, something went wrong with your geolocation. Try to manually search your city!' })
+      }
+    }
+
     function getUserLocation() {
       navigator.geolocation.getCurrentPosition((position) => {
-        setIsWeatherLoading(true)
-        const lat = position.coords.latitude
-        const lon = position.coords.longitude
-        fetchForecastByCoords({ lat, lon })
+        const { latitude, longitude } = position.coords
+
+        dispatch({ type: 'FETCH_WEATHER_INIT' })
+        fetchForecastByCoords({ latitude, longitude })
       })
     }
 
@@ -123,15 +166,10 @@ const useOpenWeatherMapAPI = () => {
   }, [])
 
   return {
-    weatherForecast,
-    isWeatherLoading,
-    errorMessage,
-    locationName,
+    ...state,
     onLocationSearchChange,
     onLocationSearchSubmit,
     onCitySuggestionClick,
-    citySuggestions,
-    isCitySuggestionsLoading,
     locationSearchCursorCounter,
     handleLocationSearchNavigation,
   }
