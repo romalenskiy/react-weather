@@ -45,5 +45,5 @@ npm start
 Add Heroku remote:
 
 ```bash
-heroku git:remote -a react-weather228
+heroku git:remote -a react-weather101
 ```
