@@ -1,6 +1,6 @@
 # React Weather
 
-[Live on Heroku](https://react-weather228.herokuapp.com/)
+[Live on Heroku](https://react-weather101.herokuapp.com/)
 
 ## About
 
